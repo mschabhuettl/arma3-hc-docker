@@ -20,6 +20,7 @@ fi
     +login $STEAM_USER $STEAM_PASS \
     +runscript `realpath install_arma3.txt` \
 
+cd /arma3
 ./arma3server \
   -client \
   -connect=$ARMA_HOST \

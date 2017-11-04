@@ -5,7 +5,7 @@
 @NoPromptForPassword 1
 
 // Set the directory where A3 is/will be installed
-force_install_dir /opt/arma3
+force_install_dir /arma3
 
 // Install or update the files for App ID 233780, the A3 server
 app_update 233780 validate
