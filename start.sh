@@ -31,3 +31,4 @@ cd /arma3
   -port=$ARMA_PORT \
   -password="$ARMA_PASS" \
   -noSound \
+  "$@"

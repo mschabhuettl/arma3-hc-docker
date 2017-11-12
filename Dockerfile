@@ -20,4 +20,8 @@ ADD install_arma3.txt install_arma3.txt
 ADD start.sh start.sh
 
 # Install Arma 3 and launch the client.
-CMD ["/bin/bash", "start.sh"]
+ENTRYPOINT ["/bin/bash", "start.sh"]
+
+# Additional arguments for arma3server (such as -mod) can be passed as arguments
+# to the container.
+CMD []
