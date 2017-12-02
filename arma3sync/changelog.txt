@@ -1,0 +1,267 @@
+--- Alpha (private) ---
+build 0.0.1
+build 0.0.2
+build 0.0.3
+build 0.0.4
+build 0.0.5
+build 0.0.6
+build 0.0.7
+build 0.0.8
+build 0.0.9
+build 0.0.10
+build 0.0.11
+build 0.0.12
+build 0.0.13
+build 0.0.14
+build 0.0.15
+build 0.0.16
+build 0.0.17
+build 0.0.18
+--- Beta (private) ---
+build 1.0.19
+--- Release (public) ---
+build 1.0.20
+build 1.0.21
+Fixed: game profile name with "-" and spaces characters wrongly splited as run parameters. 
+build 1.0.22
+- Added: Addon Groups - it is now possible to add a new group folder inside his parent folder.
+- Added: Launcher Options panel - no logs option added.
+- Fixed: Check for Addons - an error may happen when repository has a folder that does not contain addons (example: userconfig folder).
+- Improved: tree checkBox selection.
+build 1.1.23
+- Added: Repository management commands lines. User can now manage repositories on a remote Windows or Linux machine through a terminal.
+build 1.1.24
+- Added: support for running external applications through scripts (Windows batch and Linux bash).
+- Added: exThreads parameter has been added to Performance panel.
+- Added: supplementary console command "List" which displays the list of repositories parameters.
+- Fixed: RPT Viewer: select file command sometimes failed to open the RPT folder.
+build 1.1.25
+- Added: an update now button has been added on the notification panel that popup on a repository change.
+- Fixed: addons from folders outside of the ArmA 3 installation directory may not launch with the game.  
+- Fixed: events where deleted from repository after this has been re build.
+build 1.1.26
+- Added: AiA Tweaker: run parameter @A2OAPondFix was missing since last update of @AllInArmA.
+- Fixed: AiA Tweaker: TOH path wrongly initialized.
+build 1.1.27
+- Added: Task Force Arrohead Radio installer wizard.
+build 1.1.28
+- Fixed: adding a new new group into addon panel may not work with Java Update 45.
+build 1.1.29 (private)
+build 1.1.30
+- Fixed: adding a new new group into Addons panel may not work with some updated versions of Java 7.
+build 1.2.31 (private)
+build 1.2.32 (private)
+build 1.2.33 (private)
+build 1.2.34 (private)
+build 1.2.35
+- Added: It is now possible to build custom addon repository on a Web server.
+- Added: Differential update algorithm ZSYNC is used to mimimize amount of data transfered when updating files (Web based repository only).
+- Added: Autoconfig can now be imported from a web url.
+- Added: User can now choise to exclude extra local files in a folder when synchronising with a repository
+- Added: Auto-discover of addons into all destination folders can now be disable.
+- Added: Userconfig folder content can now been shared within an event.  
+- Added: Launcher options are now fully saved into profile.
+- Added: nOFilePatching has been added as an option into Launcher Options Panel.
+- Improved: Check for Addons take significally less time to achieve. 
+build 1.2.36
+- Fixed: Spaces in file names within repositories are no more replaced by _ character.
+- Fixed: Unable to synchronize addons with FTP servers that does not support the "abor" ftp command.
+build 1.2.37
+- Added: User can now join ArmA 3 dedicated servers from favorite servers list.
+- Added: Login, password and port number can now been specified when creating a new addons repository from a terminal.
+- Fixed: Switching profiles does not reload available addons.
+build 1.2.38
+- Added: User can set ArmA3Sync to close at game start.
+- Added: Repository can now been build and check directly from command line: ArmA3Sync.jar [command] [parameters], see the wiki.
+- Fixed: No splash screen option not saved when switching profile
+- Fixed: Update repository panel does not show since 1.2 Update 2.
+build 1.2.39
+- Fixed: settings not saved when ArmA3Sync is set to close at game start in preferences.
+- Fixed: failed to sync on a http addons repository protected by login and password.
+- Fixed: duplicating a profile live available addons list empty.
+build 1.2.40
+- Removed: blocking message if ArmA3Sync is run without Administrator priviledges.
+- Fixed: fail to login to FTP repository with url equals to root server ip address since 1.2.39 
+build 1.2.41 (private)
+build 1.2.42
+- Added: User can now generate addon group from repository content (modset) which is maintained updated with the synchronisation of the repository.
+- Fixed: various errors that may occured with http hosted repository.
+build 1.2.43 (private)
+build 1.2.44 (private)
+build 1.2.45 
+- Added: user can now set a default repository modset to a favorite server.
+- Fixed: Web hosted repository: 400 http error with IIS server and anonymous connection.
+build 1.2.46
+- Added: user can now set a default event modset to a favorite server.
+- Added: Web hosted repository: support for repository with hidden indexes.
+- Added: Additional run paratemers: -malloc automatically set at first place of ArmA 3 startup parameters. 
+build 1.2.47
+- Added: Build repository options: 
+Set favorite server infos to autoconfig.
+Set repository files to exclude from build (ex: empty index.hml (Apache), config.wml (IIS)).
+set folders to exclude extra local content when synchronising (ex userconfig folder).
+build 1.2.48
+- Fixed: download speed is now displayed with first decimal value for rate > 1 MB/s.
+- Fixed: some extra local files where no more deleted since 1.2 update 9 build 1.2.47.
+- Fixed: FTP erreur addon not found on repository when deleting an extra local file inside a non existing remote folder.
+- Fixed: Hide/Show extra local command files may freeze the application.
+build 1.3.49
+- Added: Repository upload throught configurable dedicated FTP connection. Only new and changed files are transfered during upload.
+- Added: Events upload throught configurable dedicated FTP connection.
+- Added: Favorite servers list attached to a repository is now automatically updated at ArmA3Sync start and repository connection.
+- Added: TFAR and ACRE installer automatically prompt to update installation on repository synchronisation.
+- Added: Console mode: user can now set files to exclude from build and folder content to exclud extra local content when sync.
+- Added: Donation by Papal.
+- Changed: Addon synchronisation: folder color is back!
+- Fixed: Swicthing between defauly destination folders does not automatically check for addons.
+build 1.3.50
+- Added: Exact match option into repository synchronisation panel: use this option if you want to compare strictly the repository content and local content into a given destination folder. 
+- Added: -enableHT and -checkSignatures as launch options.
+- Added: Launch game/server with auto-restart (see launch options panel). 
+- Fixed: Repsoitory FTP upload failded with corrupted files tree structure if repository folder does not already exists on the remote FTP server.
+build 1.3.51 (private)
+build 1.4.52 (public beta 1)
+build 1.4.53 (public)
+- Added: Parallel file downloading for both FTP and HTTP based server repository.
+- Added: Repository synchronization from command lines.  
+- Added: ACRE 2 installer wizard.
+- Added: Selectable Look and Feel.
+- Added: Malloc as Launch options parameters.
+- Changed: Files synchronization will now keep going and skip to next one if an error happens during download.
+- Fixed: Download keep waiting for a file even if server do not transfer data. Time out is set to 30s after which ArmA3Sync will skip to next file.
+- Fixed: Game profile with dots. 
+- Fixed: Favorite Server with "-" character in the name.
+- Fixed: Additional Parameters for <path> option
+- Fixed: Repository  status is set as UPDATED in the Repositories panel even if no file have been changed since last build.
+build 1.4.54 (public)
+- Fixed: ArmA3Sync may freezes after ArmA 3 had just started since 1.4.53
+build 1.4.55 (public beta 1)
+build 1.4.56 (private beta 2)
+build 1.4.57 (private beta 3)
+build 1.4.58 (public)
+Added: Export profile as Desktop shortcut.
+Added: Repository: connection timeout and read timeout can now be set manually.
+Added: Space bar can now be use to check/uncheck mod selection.
+Added: ArmA3Sync Console: -SYNC command can now use with/without exact file matching (see howto in the wiki).
+Added: Download: Errors messages can now  be exported to desktop as a log file.
+Fixed: Download/Upload freezes if transfer file has a zero byte size (regression from version 1.4)
+Fixed: ArmA3Sync Console: main folder path sets to null when creating a new repository from command line (regression from version 1.4)
+build 1.4.59 (public beta 1)
+build 1.4.60 (private beta 2)
+build 1.4.61 (public)
+Fixed: Linux: Check repository command may return a wrong message.
+Fixed: ACRE wizard may pop up along with ACRE2 wizard after files synchronisation finished.
+Improved: Build repository progress speed.
+Changed: Starting the game with Joint Server enabled modset option is now restrive to the list of addons of this modset.
+Changed: Launcher optionns: -enableHT is now disabled if cpucount is specified.
+build 1.4.62 (private)
+build 1.4.63 (public)
+Added: New commande line Java -jar ArmA3Sync -UPDATE: check for ArmASync updates.
+Added: Automatic update of clients Favorite servers info associated to a repository.
+Modified: Connection time out and read time out sets to 60000 ms by default.
+Fixed: Repository upload: full re-upload is performed if FTP upload protocol is different from repository protocol (regression from 1.4 update 3).
+Fixed: Importing autoconfig failed if server is case sensitive for url (regression from 1.4 update 3).
+Fixed: Changelogs info is not updated from the ArmA3Sync GUI server side after a build repository (regression from 1.4 update 3).
+Fixed: -EnableHT is removed from Run parameters after a restart of ArmA3Sync (regression from 1.4 update 3).
+build 1.5.64 (private v1.5 beta 1)
+build 1.5.65 (public v1.5)
+- Added: Compressing of pbo files into zip format for transfering new files. Repository manager can now choose to compress bpo files from Build options. 
+- Added: Support for HTTPS transfer protocol for hosting addons repository. 
+- Added: ArmA3Sync now check for the HTTP server to support range requests. In case the server doesn't, ArmAS3ync will automatically disengage partial file transfer functionnally (ZSYNC) to allow the synchronisation to work at basic level.
+- Added: Repository manager can now disable partial file transfer (ZSYNC) from  Build options panel.
+- Added: User can now set the maximum of active connections and download speed from Advanced options panel.
+- Added: Check repository: the command can now be performed remotely. However it will still progress faster when performed on the host machine.
+- Added: Upload repository: repository manager can now choose to upload pbo files in compressed format.
+- Added: A new download report function provides advanced informations on files synchronization. 
+- Added: Addon search directories can now be ordered by priority.
+- Fixed: Error HTTP 403 is returned by the server when blank User-Agent is not allowed from server configuration.
+- Fixed: ArmA3Sync GUI doesn't start with last JRE 1.8.0_60 published on 18 August 2015. 
+- Removed: ACRE installer wizard.
+build 1.5.66 (public v1.5 Update 1)
+- Fixed: Event synchronization: the is no  more addons pre-selection since v1.5.
+- Fixed: Build repository/Addons Synchronization: Incorrect error message "Missing write permissions" is shown when targeted path is on a local network shared between Windows and Linux. 
+build 1.5.67 (private v1.5 Update 2 Beta 1)
+build 1.5.68 (public v1.5 Update 2)
+- Changed: Launcher Options: -filePathing instead of -noFilePathing (change from ArmA 3 v1.50).
+- Fixed: Wrong detection of partial file transfer support on Microsoft IIS 7 server. 
+build 1.5.69 (public v1.5 Update 3)
+- Added: Detection of incorrect file size transfer.
+- Fixed: FTP transfer may hang at the end of a download with some servers.
+- Fixed: Uncompressing may not operate with the last downloaded file for repository built with pbo compressing option and multiple connections enabled.
+- Fixed: ArmA3Sync GUI may not display with last JRE 1.8.0_60.
+build 1.5.70 (private v1.5 Update 4 Beta 1)
+build 1.5.71 (public v1.5 Update 4)
+- Added: Bikey extractor tool: Extract bikey files from source directory to target directory. Availble from GUI, console, and script command line.
+- Added: Files synchronization: ArmA3Sync will try to resume automatically a file download if received file size doesn't match remote file size (server connection drop).
+- Added: Battleye: ArmA3Sync will automatically add "2 1" parameter if arma3Battleye.exe is set as executable location.
+- Added: New command Duplicate group.
+- Added: Malloc System from Launcher options panel.
+- Improved: Upload repository will now procceed faster during the checking of remote files.
+- Fixed: Cannot close a repository tabulation if not at front view.
+build 1.5.72 (public v1.5 Update 5)
+- Added: user can now set addon groups as modset to join with a favourite server.
+- Fixed: failed to download file with size superior to 2 GB.
+- Fixed: FTP files download: an error occures since v1.5 Update 4 if the server does not support the MLST command. ArmA3Sync will now use in this case the less efficient LST command instead.
+build 1.5.73 (public v1.5 Update 5)
+- Fixed: failed to edit repository (regression from version 1.5.72)
+build 1.5.74 (private v1.5 Update 6 Beta 1)
+build 1.5.75 (private v1.5 Update 6 Beta 2)
+build 1.5.76 (private v1.5 Update 6 Beta 3)
+build 1.5.77 (private v1.5 Update 6 Beta 4)
+build 1.5.78 (public  v1.5 Update 6)
+- Added: Addon Priorities: user can now move an addon to the top of the list in one click.
+- Added: Addon Priorities: user can now reset the list to default alphabetic order.
+- Added: Repositories management: new "Administrate Repository" button from Repositories panel.
+- Changed: Files synchronization: Advanced configuration button changed to Settings buttons. User can now change Read and connection timeouts within the download settings. 
+- Fixed: Profiles are no more erased from the disk if a I/O exception occurs on saving (thanks to Protozorq contribution).
+- Fixed: Repositories are no more erased from the disk if a I/O exception occurs on saving.
+- Fixed: Build repository: wrong error message about free disk space requirement with compression of pbo files.
+- Fixed: HTTP based repository: error message "java.lang.IllegalArgumentException: Illegal character in authority at index 7" is returned on Check for Addons if the repository URL contains blank spaces.
+- Fixed: HTTP based repository: error message "java.lang.StringIndexOutOfBoundsException" is returned on Check for Addons if zsync file content is empty or corrupted server side.
+build 1.5.79 (public v1.5 Update 6)
+- Fixed: Selected addon does not appear within the run parameters list depending of the case of the addon name (regression from v1.5.78).
+build 1.5.80 (public v1.5 Update 6)
+ Fixed: Upload repository: Events file is not uploaded (regression from v1.5.78).
+build 1.5.81 (private v1.5 Update 7 Beta 1)
+build 1.5.82 (private v1.5 Update 7 Beta 2)
+build 1.5.83 (public v1.5 Update 7)
+- Added: Files synchronization: automatically apply userconfig changes into ArmA3 installation directory.
+- Added: Proxy server configuration is now available from Help menu.
+- Added: Enable Battleye option into the launcher options panel.
+- Added: Warning message if user try to join a game server with a modset and corresponding repository is updated. 
+- Added: Addon groups section now show a warning notification when duplicates addon name are available.
+- Improved: GUI ergonomics and readability on 4K screens.
+- Fixed: Launcher options panel is not updated when switching profile since v1.5 Update 6.
+- Fixed: Addon priorities order when an addon to the top level.
+build 1.5.84 (public v1.5 Update 7)
+- Fixed: Upload Repository: repository is completly re-uploaded when upload protocol is different from repository protocol (regression from 1.5.83).
+build 1.6.85 (public v1.6 Beta 1)
+- Added: Automatic synchronization of files on repository update.
+- Added: Periodical repository check for updates (menu->help->preferences).
+- Added: Start with Windows (menu->help->preferences).
+- Added: Customizable icons size (menu->help->preferences)).
+- Added: Notification on repository updates into icon tray.
+- Added: Automatic attempt to reconnect to repository on connection lost for both files synchronization and repository upload.
+- Fixed: Excessive cpu loading when setting up download speed limit.
+- Improved: Check for addons speed for repository hosted on HTTP server.
+- Removed: TFAR installer and ACRE2 installer.
+build 1.6.86 (public v1.6 Beta 2)
+- Added: Safe mode: start with default Java crossplatform L&F.
+- Removed: Start from Windows registry
+build 1.6.87 (public v1.6 Beta 3)
+- Fixed: update favorite servers
+- Fixed: Start from Windows registry
+build 1.6.88 (public v1.6 Beta 4)
+- Fixed: update repository status on check for Addons
+- Fixed: HTTP server: authentication malformed header.
+build 1.6.89 (public v1.6 Beta 5)
+- Added: -hugepages as launch option parameters.
+build 1.6.90 (public v1.6)
+build 1.6.91 (public v1.6 Update 1)
+Fixed: Repository upload speed (regression from update 1.6).
+Fixed: java.util.ConcurrentModificationException on repository synchronization.
+build 1.6.92 (public v1.6 Update 2)
+Fixed: Failed to export autoconfig file (regression from update 1.6).
+Fixed: External Apps run parameters not taken into account when using a script file as entry point.
+Fixed: Upload repository: FTP error 501 returned when repository upload IP/hostname is setup as upload url.
+
