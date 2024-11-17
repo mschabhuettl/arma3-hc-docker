@@ -48,12 +48,12 @@ LOG_FILE="/arma3/headlessclient-$RANDOM_ID.log"
 while true; do
   echo "Starting Arma 3 headless client with ID: $RANDOM_ID..."
 
-  if [ ! -x "./arma3server" ]; then
-    >&2 echo "Error: arma3server not found or not executable in $(pwd)."
+  if [ ! -x "/arma3/arma3server" ]; then
+    >&2 echo "Error: arma3server not found or not executable in /arma3."
     exit 1
   fi
 
-  ./arma3server \
+  /arma3/arma3server \
     -client \
     -connect=$ARMA_HOST \
     -port=$ARMA_PORT \
