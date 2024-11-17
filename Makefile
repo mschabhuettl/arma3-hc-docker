@@ -12,7 +12,7 @@ build:
 
 push: build
 	@echo "Pushing Docker image to $(REPO)"
-	gcloud docker -- push $(REPO)/$(NAME):$(TAG)
+	docker push $(REPO)/$(NAME):$(TAG)
 
 default: build
 
