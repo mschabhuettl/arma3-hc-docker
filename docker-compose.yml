@@ -1,0 +1,12 @@
+services:
+  arma3-client-0:
+    image: arma3-headless-client
+    container_name: arma3-client-0
+    env_file: client.env
+    restart: always
+
+  arma3-client-1:
+    image: arma3-headless-client
+    container_name: arma3-client-1
+    env_file: client.env
+    restart: always
