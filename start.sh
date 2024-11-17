@@ -40,6 +40,13 @@ fi
 echo "Running SteamCMD to update Arma 3 files..."
 $STEAMCMD_PATH +login $STEAM_USER $STEAM_PASS +runscript "$INSTALL_SCRIPT"
 
+if [ $? -eq 0 ]; then
+  echo "Arma 3 Dedicated Server installation/update completed successfully."
+else
+  echo "Error: Arma 3 Dedicated Server installation/update failed." >&2
+  exit 1
+fi
+
 # Variables for logs and identification
 HEADLESS_CLIENT_NAME="headlessclient-$RANDOM_ID"
 LOG_FILE="/arma3/headlessclient-$RANDOM_ID.log"
