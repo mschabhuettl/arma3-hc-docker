@@ -11,8 +11,5 @@ force_install_dir /arma3
 // 'validate' ensures all files are present and correct
 app_update 233780 validate
 
-// Print a success message
-echo "Arma 3 Dedicated Server installation/update completed successfully."
-
 // Exit SteamCMD
 quit
