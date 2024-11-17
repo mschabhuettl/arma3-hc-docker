@@ -22,6 +22,18 @@ cd arma3-headless-client-docker
 
 ---
 
+## **Build Process**
+
+### **Build the Docker Image Locally**
+To build the Docker image, execute the following command inside the cloned repository:
+```bash
+docker build -t arma3-headless-client .
+```
+
+- **`-t arma3-headless-client`**: Assigns the name `arma3-headless-client` to the built image.
+
+---
+
 ## **Usage**
 
 ### **Run a Single Headless Client**
@@ -70,16 +82,6 @@ ARMA_PASS=your_server_password
 **Start the Clients:**
 ```bash
 docker-compose up -d
-```
-
----
-
-## **Building the Docker Image**
-
-### **Build Locally**
-You can build the Docker image with the following command:
-```bash
-docker build -t arma3-headless-client .
 ```
 
 ---
