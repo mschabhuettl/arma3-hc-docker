@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
-set -x
+
+# Generate a random ID for this instance
+RANDOM_ID=$(uuidgen | cut -c1-8) # Shorten the UUID to 8 characters for simplicity
+echo "Generated Random ID: $RANDOM_ID"
 
 # Check if Steam user credentials are provided
 if [ -z "$STEAM_USER" ]; then
@@ -33,33 +36,21 @@ if [ ! -f "$INSTALL_SCRIPT" ]; then
   exit 1
 fi
 
-# Logout to ensure no active Steam sessions interfere
-$STEAMCMD_PATH +login anonymous +quit
-
-# Retry Steam login if necessary
-for i in {1..3}; do
-    $STEAMCMD_PATH \
-        +login $STEAM_USER $STEAM_PASS \
-        +runscript "$INSTALL_SCRIPT" && break || {
-        echo "Retrying Steam login... attempt $i of 3"
-        sleep 10
-    }
-    if [ "$i" -eq 3 ]; then
-        >&2 echo "Error: Failed to authenticate with Steam after 3 attempts."
-        exit 1
-    fi
-done
+# Install or update Arma 3 via SteamCMD
+$STEAMCMD_PATH \
+    +login $STEAM_USER $STEAM_PASS \
+    +runscript "$INSTALL_SCRIPT"
 
 # Ensure MPMissionsCache directory exists to avoid crashes
 MP_MISSIONS_CACHE="/root/.local/share/Arma 3/MPMissionsCache"
 mkdir -p "$MP_MISSIONS_CACHE"
 
-# Navigate to Arma 3 installation directory
-cd /arma3
+# Define the client name for log filtering
+HEADLESS_CLIENT_NAME="headlessclient-$RANDOM_ID"
 
-# Retry mechanism for all errors
+# Retry mechanism for all errors and disconnections specific to the Headless Client
 while true; do
-  echo "Starting Arma 3 headless client..."
+  echo "Starting Arma 3 headless client with ID: $RANDOM_ID..."
 
   # Verify arma3server exists and is executable
   if [ ! -x "./arma3server" ]; then
@@ -67,16 +58,34 @@ while true; do
     exit 1
   fi
 
-  # Launch Arma 3 headless client
+  # Start the Arma 3 headless client in the background and log output
   ./arma3server \
     -client \
     -connect=$ARMA_HOST \
     -port=$ARMA_PORT \
     -password="$ARMA_PASS" \
+    -name=$HEADLESS_CLIENT_NAME \
     -noSound \
-    "$@"
+    "$@" >> "/arma3/headlessclient-$RANDOM_ID.log" 2>&1 &
 
-  # Log the restart and retry
-  echo "Arma 3 headless client exited unexpectedly. Retrying in 10 seconds..."
+  CLIENT_PID=$!
+  echo "Headless client started with PID: $CLIENT_PID and ID: $RANDOM_ID"
+
+  # Monitor the log for issues related to the Headless Client
+  tail -n 0 -f "/arma3/headlessclient-$RANDOM_ID.log" | grep --line-buffered "$HEADLESS_CLIENT_NAME" | while read line; do
+    echo "$line"
+    if [[ "$line" == *"kicked"* ]] || 
+       [[ "$line" == *"authentication failed"* ]] || 
+       [[ "$line" == *"connection timeout"* ]] || 
+       [[ "$line" == *"Invalid ticket"* ]] || 
+       [[ "$line" == *"disconnected"* ]] || 
+       [[ "$line" == *"not responding"* ]]; then
+      echo "Detected issue for $HEADLESS_CLIENT_NAME. Restarting..."
+      kill -9 $CLIENT_PID
+      break
+    fi
+  done
+
+  echo "Client $HEADLESS_CLIENT_NAME stopped unexpectedly. Restarting in 10 seconds..."
   sleep 10
 done
