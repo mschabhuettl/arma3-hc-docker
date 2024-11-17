@@ -7,12 +7,14 @@ RUN apt-get update && apt-get install -y \
     && dpkg --add-architecture i386 \
     && apt-get update
 
-# Install steamcmd and accept the license
-RUN apt-get install -y steamcmd && \
-    mkdir -p /usr/games && \
-    ln -s $(which steamcmd) /usr/games/steamcmd && \
-    echo "steam steam/question select 'I AGREE'" | debconf-set-selections && \
+# Pre-configure debconf to accept the Steam License Agreement
+RUN echo "steam steam/question select I AGREE" | debconf-set-selections && \
     echo "steam steam/license note ''" | debconf-set-selections
+
+# Install steamcmd
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y steamcmd && \
+    mkdir -p /usr/games && \
+    ln -s $(which steamcmd) /usr/games/steamcmd
 
 # Set working directory
 WORKDIR /opt/arma3
