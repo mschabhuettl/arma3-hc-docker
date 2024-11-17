@@ -4,11 +4,12 @@
 // Do not prompt for a password, use the one specified in the login command
 @NoPromptForPassword 1
 
-// Set the directory where A3 is/will be installed
+// Set the installation directory for Arma 3 Dedicated Server
 force_install_dir /arma3
 
-// Install or update the files for App ID 233780, the A3 server
+// Install or update the Arma 3 Dedicated Server files (App ID: 233780)
+// 'validate' ensures all files are present and correct
 app_update 233780 validate
 
-// Exit the Steam shell
+// Exit SteamCMD
 quit
