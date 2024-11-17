@@ -9,6 +9,7 @@ This repository provides a Docker image for deploying Arma 3 headless clients. I
 - Compatible with multiple clients via `docker-compose`.
 - Fully configurable using environment variables.
 - Automatically installs or updates Arma 3 server files.
+- Resilient retry mechanism for client reconnects in case of errors.
 
 ---
 
@@ -83,6 +84,15 @@ ARMA_PASS=your_server_password
 ```bash
 docker-compose up -d
 ```
+
+---
+
+## **Retry Mechanism**
+
+The included startup script implements an automatic retry mechanism for client restarts in case of:
+- Kicks due to Steam authentication errors (e.g., `Invalid ticket`).
+- Disconnections from the Arma 3 server.
+- Any other issue preventing the client from staying connected.
 
 ---
 
