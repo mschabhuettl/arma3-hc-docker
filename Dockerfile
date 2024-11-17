@@ -8,10 +8,9 @@ RUN apt-get update && apt-get install -y \
     && apt-get update
 
 # Install steamcmd
-RUN dpkg --add-architecture i386 && \
-    apt-get update && \
-    apt-get install -y steamcmd || true && \
-    apt-get install -f -y
+RUN apt-get update && apt-get install -y steamcmd && \
+    mkdir -p /usr/games && \
+    ln -s $(which steamcmd) /usr/games/steamcmd
 
 # Set working directory
 WORKDIR /opt/arma3
