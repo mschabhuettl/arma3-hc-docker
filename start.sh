@@ -17,8 +17,10 @@ if [ -z "$STEAM_USER" ] || [ -z "$STEAM_PASS" ]; then
   exit 1
 fi
 
-# Set default port if ARMA_PORT is not specified
+# Set default values
 ARMA_PORT=${ARMA_PORT:-2302}
+ARMA_HOST=${ARMA_HOST:-"127.0.0.1"}
+ARMA_PASS=${ARMA_PASS:-""}
 
 # Ensure steamcmd is accessible
 STEAMCMD_PATH="/usr/games/steamcmd"
@@ -54,13 +56,13 @@ while true; do
     -port=$ARMA_PORT \
     -password="$ARMA_PASS" \
     -noSound \
-    >> "/arma3/headlessclient-$RANDOM_ID.log" 2>&1 &
+    >> "$LOG_FILE" 2>&1 &
 
   CLIENT_PID=$!
   echo "Headless client started with PID: $CLIENT_PID and ID: $RANDOM_ID"
 
   # Monitor the specific log file
-  tail -n 0 -f "/arma3/headlessclient-$RANDOM_ID.log" | while read line; do
+  tail -n 0 -f "$LOG_FILE" | while read line; do
     echo "$line"
     if [[ "$line" == *"kicked"* ]] || 
        [[ "$line" == *"authentication failed"* ]] || 
