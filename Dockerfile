@@ -8,10 +8,10 @@ RUN apt-get update && apt-get install -y \
     && apt-get update
 
 # Install steamcmd
-RUN DEBIAN_FRONTEND=noninteractive \
-    apt-get install -y steamcmd && \
-    echo steam steam/question select "I AGREE" | debconf-set-selections && \
-    echo steam steam/license note '' | debconf-set-selections
+RUN dpkg --add-architecture i386 && \
+    apt-get update && \
+    apt-get install -y steamcmd || true && \
+    apt-get install -f -y
 
 # Set working directory
 WORKDIR /opt/arma3
