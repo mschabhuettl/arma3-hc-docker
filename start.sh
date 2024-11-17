@@ -57,10 +57,10 @@ mkdir -p "$MP_MISSIONS_CACHE"
 # Navigate to Arma 3 installation directory
 cd /arma3
 
-# Retry mechanism for restarting on kick
+# Retry mechanism for all errors
 while true; do
   echo "Starting Arma 3 headless client..."
-  
+
   # Verify arma3server exists and is executable
   if [ ! -x "./arma3server" ]; then
     >&2 echo "Error: arma3server not found or not executable in $(pwd)."
@@ -76,7 +76,7 @@ while true; do
     -noSound \
     "$@"
 
-  # If the client exits, log and retry
-  echo "Arma 3 headless client exited. Retrying in 10 seconds..."
+  # Log the restart and retry
+  echo "Arma 3 headless client exited unexpectedly. Retrying in 10 seconds..."
   sleep 10
 done
