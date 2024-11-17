@@ -11,37 +11,40 @@ echo "Generated Random ID: $RANDOM_ID"
 # Ensure necessary directories exist
 mkdir -p /arma3 /root/.local/share/Arma\ 3/MPMissionsCache
 
-# Check if Steam user credentials are provided
+# Validate Steam user credentials
 if [ -z "$STEAM_USER" ] || [ -z "$STEAM_PASS" ]; then
   >&2 echo "Error: STEAM_USER or STEAM_PASS is not set."
   exit 1
 fi
 
-# Set default values
+# Default values for Arma 3 server connection
 ARMA_PORT=${ARMA_PORT:-2302}
 ARMA_HOST=${ARMA_HOST:-"127.0.0.1"}
 ARMA_PASS=${ARMA_PASS:-""}
 
-# Ensure steamcmd is accessible
+# Verify steamcmd availability
 STEAMCMD_PATH="/usr/games/steamcmd"
 if [ ! -x "$STEAMCMD_PATH" ]; then
   >&2 echo "Error: steamcmd not found at $STEAMCMD_PATH. Verify installation."
   exit 1
 fi
 
-# Verify install_arma3.txt exists
+# Verify existence of install_arma3.txt
 INSTALL_SCRIPT=$(realpath install_arma3.txt)
 if [ ! -f "$INSTALL_SCRIPT" ]; then
   >&2 echo "Error: install_arma3.txt not found."
   exit 1
 fi
 
-# Install or update Arma 3 via SteamCMD
+# Install or update Arma 3 files
+echo "Running SteamCMD to update Arma 3 files..."
 $STEAMCMD_PATH +login $STEAM_USER $STEAM_PASS +runscript "$INSTALL_SCRIPT"
 
+# Variables for logs and identification
 HEADLESS_CLIENT_NAME="headlessclient-$RANDOM_ID"
 LOG_FILE="/arma3/headlessclient-$RANDOM_ID.log"
 
+# Infinite retry loop for the headless client
 while true; do
   echo "Starting Arma 3 headless client with ID: $RANDOM_ID..."
 
@@ -61,7 +64,7 @@ while true; do
   CLIENT_PID=$!
   echo "Headless client started with PID: $CLIENT_PID and ID: $RANDOM_ID"
 
-  # Monitor the specific log file
+  # Monitor log file for specific client errors
   tail -n 0 -f "$LOG_FILE" | while read line; do
     echo "$line"
     if [[ "$line" == *"kicked"* ]] || 
