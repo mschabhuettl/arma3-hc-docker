@@ -1,27 +1,27 @@
-FROM ubuntu
+FROM ubuntu:latest
 
-# Set up apt.
-RUN apt-get update
-RUN apt-get install -y software-properties-common python-software-properties
-RUN add-apt-repository multiverse
-RUN dpkg --add-architecture i386
+# Set up apt and prepare the environment
+RUN apt-get update && apt-get install -y \
+    software-properties-common \
+    && add-apt-repository multiverse \
+    && dpkg --add-architecture i386 \
+    && apt-get update
 
-# Install steamcmd.
-RUN apt-get update
-RUN yes 2 | apt-get install -y steamcmd
+# Install steamcmd
+RUN apt-get install -y steamcmd
 
-# We don't install Arma 3 as part of the docker build because it can't be
-# installed with anonymous login, and using --build-arg would make the
-# credentials visible in the build history.
-
+# Set working directory
 WORKDIR /opt/arma3
 
+# Copy necessary scripts
 ADD install_arma3.txt install_arma3.txt
 ADD start.sh start.sh
 
-# Install Arma 3 and launch the client.
+# Ensure scripts are executable
+RUN chmod +x start.sh
+
+# Install Arma 3 and launch the client
 ENTRYPOINT ["/bin/bash", "start.sh"]
 
 # Additional arguments for arma3server (such as -mod) can be passed as arguments
-# to the container.
 CMD []
