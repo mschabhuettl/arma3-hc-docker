@@ -29,7 +29,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y steamcmd && \
 RUN mkdir -p /arma3
 
 # Set working directory
-WORKDIR /opt/arma3
+WORKDIR /arma3
 
 # Copy necessary scripts
 ADD install_arma3.txt install_arma3.txt
