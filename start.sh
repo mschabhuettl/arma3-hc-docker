@@ -26,10 +26,29 @@ if [ ! -x "$STEAMCMD_PATH" ]; then
   exit 1
 fi
 
-# Run steamcmd to install or update Arma 3
-$STEAMCMD_PATH \
-    +login $STEAM_USER $STEAM_PASS \
-    +runscript "$(realpath install_arma3.txt)"
+# Verify install_arma3.txt exists
+INSTALL_SCRIPT=$(realpath install_arma3.txt)
+if [ ! -f "$INSTALL_SCRIPT" ]; then
+  >&2 echo "Error: install_arma3.txt not found at $(pwd)."
+  exit 1
+fi
+
+# Logout to ensure no active Steam sessions interfere
+$STEAMCMD_PATH +login anonymous +quit
+
+# Retry Steam login if necessary
+for i in {1..3}; do
+    $STEAMCMD_PATH \
+        +login $STEAM_USER $STEAM_PASS \
+        +runscript "$INSTALL_SCRIPT" && break || {
+        echo "Retrying Steam login... attempt $i of 3"
+        sleep 10
+    }
+    if [ "$i" -eq 3 ]; then
+        >&2 echo "Error: Failed to authenticate with Steam after 3 attempts."
+        exit 1
+    fi
+done
 
 # Ensure MPMissionsCache directory exists to avoid crashes
 MP_MISSIONS_CACHE="/root/.local/share/Arma 3/MPMissionsCache"
@@ -38,11 +57,26 @@ mkdir -p "$MP_MISSIONS_CACHE"
 # Navigate to Arma 3 installation directory
 cd /arma3
 
-# Launch Arma 3 headless client
-./arma3server \
-  -client \
-  -connect=$ARMA_HOST \
-  -port=$ARMA_PORT \
-  -password="$ARMA_PASS" \
-  -noSound \
-  "$@"
+# Retry mechanism for restarting on kick
+while true; do
+  echo "Starting Arma 3 headless client..."
+  
+  # Verify arma3server exists and is executable
+  if [ ! -x "./arma3server" ]; then
+    >&2 echo "Error: arma3server not found or not executable in $(pwd)."
+    exit 1
+  fi
+
+  # Launch Arma 3 headless client
+  ./arma3server \
+    -client \
+    -connect=$ARMA_HOST \
+    -port=$ARMA_PORT \
+    -password="$ARMA_PASS" \
+    -noSound \
+    "$@"
+
+  # If the client exits, log and retry
+  echo "Arma 3 headless client exited. Retrying in 10 seconds..."
+  sleep 10
+done
