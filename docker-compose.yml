@@ -10,7 +10,9 @@ services:
     restart: "no"
 
   arma3-client-0:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.client
     container_name: arma3-client-0
     depends_on:
       - updater
@@ -20,7 +22,9 @@ services:
     restart: always
 
   arma3-client-1:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.client
     container_name: arma3-client-1
     depends_on:
       - updater
