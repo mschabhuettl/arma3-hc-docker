@@ -18,19 +18,25 @@ Welcome to the **Arma 3 Headless Client** repository! This project provides a Do
 
 ## 🚀 **Getting Started**
 
-### 1️⃣ **Option 1: Using Prebuilt Images**
+### 🏗️ **Option 1: Using Prebuilt Images**
 The simplest way to get started is to use the prebuilt images hosted on Docker Hub.
 
-#### **Step 1: Create Configuration**
+#### 1️⃣ **Clone the Repository**
+```bash
+git clone https://github.com/mschabhuettl/arma3-hc-docker.git
+cd arma3-hc-docker
+```
+
+#### 2️⃣ **Create Configuration**
 Edit the `arma3_hc_config.env` file to match your Arma 3 server setup.
 
-#### **Step 2: Run Updater**
+#### 3️⃣ **Run Updater**
 Run the updater to download the Arma 3 server files and mods:
 ```bash
 docker compose up updater
 ```
 
-#### **Step 3: Start Headless Clients**
+#### 4️⃣ **Start Headless Clients**
 Start the headless clients:
 ```bash
 docker compose up -d arma3-client-0 arma3-client-1
@@ -43,31 +49,31 @@ The following Docker Hub images are used:
 
 ---
 
-### 2️⃣ **Option 2: Custom Building**
+### 🛠️ **Option 2: Custom Building**
 If you prefer to build the images locally:
 
-#### **Step 1: Clone the Repository**
+#### 1️⃣ **Clone the Repository**
 ```bash
 git clone https://github.com/mschabhuettl/arma3-hc-docker.git
 cd arma3-hc-docker
 ```
 
-#### **Step 2: Build the Updater**
+#### 2️⃣ **Build the Updater**
 Build the updater container:
 ```bash
 docker compose -f docker-compose.custom-build.yml build updater
 ```
 
-#### **Step 3: Configure Settings**
+#### 3️⃣ **Create Configuration**
 Edit `arma3_hc_config.env` to fit your needs (mods, server details, credentials, etc.).
 
-#### **Step 4: Start the Updater**
+#### 4️⃣ **Start the Updater**
 Start the updater to download the required Arma 3 server files:
 ```bash
 docker compose -f docker-compose.custom-build.yml up updater
 ```
 
-#### **Step 5: Run Headless Clients**
+#### 5️⃣ **Run Headless Clients**
 Start the headless clients:
 ```bash
 docker compose -f docker-compose.custom-build.yml up -d arma3-client-0 arma3-client-1
