@@ -1,0 +1,31 @@
+# Dockerfile for Arma 3 Headless Clients
+
+# Use the same base image as the updater to ensure consistency
+FROM ubuntu:latest
+
+# Set up apt and configure locales
+RUN apt-get update && apt-get install -y \
+    locales \
+    && dpkg --add-architecture i386 \
+    && apt-get update
+
+# Configure locales to avoid locale warnings
+RUN locale-gen en_US.UTF-8 && \
+    update-locale LANG=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
+
+# Set working directory
+WORKDIR /arma3
+
+ADD start.sh start.sh
+
+# Ensure scripts are executable
+RUN chmod +x start.sh
+
+# Launch the Arma 3 Headless Client
+ENTRYPOINT ["/bin/bash", "start.sh"]
+
+# Additional arguments for arma3server (such as -mod) can be passed as arguments
+CMD []
