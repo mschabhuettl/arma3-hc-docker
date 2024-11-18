@@ -1,60 +1,55 @@
-# **Arma 3 Headless Client**
+# 📦 **Arma 3 Headless Client Docker Image**
 
-This repository provides a Docker image for deploying Arma 3 headless clients. It simplifies the setup and management of multiple headless clients, which are used to improve Arma 3 server performance by offloading AI and scripting calculations.
-
----
-
-## **Features**
-- Dockerized Arma 3 headless client for easy deployment.
-- Compatible with multiple clients via `docker compose`.
-- Fully configurable using environment variables.
-- Automatically installs or updates Arma 3 server files and mods.
-- Resilient retry mechanism for client reconnects in case of errors.
+Welcome to the **Arma 3 Headless Client** repository! This project provides a Docker image to easily deploy and manage multiple Arma 3 headless clients, offloading AI and scripting calculations to boost your Arma 3 server's performance. 🎮💨
 
 ---
 
-## **Getting Started**
+## ✨ **Features**
+- 🐳 **Dockerized Deployment**: Effortlessly set up Arma 3 headless clients.
+- 📦 **Multi-client Support**: Run multiple clients via `docker compose`.
+- ⚙️ **Fully Configurable**: Customize using environment variables.
+- 🔄 **Automatic Updates**: Auto-install and update server files and mods.
+- 🔁 **Resilient Client Reconnects**: Built-in retry mechanism for reconnects.
 
-### **Clone the Repository**
+---
+
+## 🚀 **Getting Started**
+
+### 1️⃣ **Clone the Repository**
 ```bash
 git clone https://github.com/mschabhuettl/arma3-headless-client-docker.git
 cd arma3-headless-client-docker
 ```
 
----
+### 2️⃣ **Build the Updater**
+Build the updater container:
+```bash
+docker compose build updater
+```
 
-## **Build Process**
+### 3️⃣ **Configure Settings**
+Edit `arma3_hc_config.env` to fit your needs (mods, server details, credentials, etc.).
 
-### **Initial Setup**
-1. **Build the Updater**  
-   Run the following command to build the updater container:
-   ```bash
-   docker compose build updater
-   ```
+### 4️⃣ **Start the Updater**
+Start the updater to download the required Arma 3 server files:
+```bash
+docker compose up updater
+```
 
-2. **Edit the Configuration File**  
-   Modify `arma3_hc_config.env` to suit your needs, including setting up mods, server details, and credentials.
-
-3. **Start the Updater**  
-   This will start the updater container, which will download the required Arma 3 server files:
-   ```bash
-   docker compose up updater
-   ```
-
-4. **Start the Headless Clients**  
-   Run the following command to start the headless clients using the updated configuration:
-   ```bash
-   docker compose up -d arma3-client-0 arma3-client-1
-   ```
+### 5️⃣ **Run Headless Clients**
+Start the headless clients using the updated configuration:
+```bash
+docker compose up -d arma3-client-0 arma3-client-1
+```
 
 ---
 
-## **Usage**
+## 🔧 **Usage**
 
 ### **Run Multiple Clients with Docker Compose**
-You can define and run multiple clients using `docker compose`.
+With `docker compose`, you can easily define and manage multiple clients.
 
-**`docker-compose.yml` Example:**
+**Example `docker-compose.yml`**:
 ```yaml
 services:
   updater:
@@ -107,7 +102,7 @@ volumes:
   logs:
 ```
 
-**Environment File Example (`arma3_hc_config.env`):**
+**Environment File Example (`arma3_hc_config.env`)**
 ```env
 # Steam credentials
 STEAM_USER=your_steam_username
@@ -130,19 +125,18 @@ HC_ADDITIONAL_PARAMS="-nosplash -world=empty -nosound"
 
 ---
 
-## **Retry Mechanism**
+## 🔄 **Retry Mechanism**
 
-The included startup script implements an automatic retry mechanism for client restarts in case of:
-- Kicks due to Steam authentication errors (e.g., `Invalid ticket`).
-- Disconnections from the Arma 3 server.
-- Any other issue preventing the client from staying connected.
+The startup script has an automatic retry feature to handle issues like:
+- 🚫 **Steam Authentication Errors** (e.g., `Invalid ticket`).
+- 🔌 **Server Disconnections**.
+- ❗ **Unexpected Issues** preventing client connections.
 
 ---
 
-## **Configuration**
+## ⚙️ **Configuration**
 
 ### **Environment Variables**
-The following variables can be configured via `.env` files:
 
 | Variable               | Description                                  | Default                           |
 |------------------------|----------------------------------------------|-----------------------------------|
@@ -157,18 +151,22 @@ The following variables can be configured via `.env` files:
 
 ---
 
-## **License**
+## 📜 **License**
 
-This project is licensed under the MIT License. See the `LICENSE` file for details.
-
----
-
-## **Contributing**
-
-Contributions are welcome! Please submit a pull request or open an issue to discuss any changes.
+This project is licensed under the MIT License. See the `LICENSE` file for more details.
 
 ---
 
-## **Acknowledgments**
+## 🤝 **Contributing**
 
-Special thanks to [Dan Albert](https://github.com/DanAlbert) for the original implementation of the Arma 3 headless client Docker image. This project builds upon and improves the foundation provided by the original work.
+Contributions are always welcome! Feel free to submit a pull request or open an issue to discuss changes. Let's make this project better together! 💡✨
+
+---
+
+## 🙏 **Acknowledgments**
+
+Special thanks to [Dan Albert](https://github.com/DanAlbert) for the original Arma 3 headless client Docker image. This project builds upon and improves his foundation. 🙌🎉
+
+---
+
+Happy gaming, and may your FPS always be high! 🎮🔥🚀
