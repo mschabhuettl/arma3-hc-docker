@@ -42,8 +42,7 @@ if [ -n "$ARMA_MODS" ]; then
 fi
 
 # Variables for logs and identification
-HEADLESS_CLIENT_NAME="$HC_NAME"
-LOG_FILE="/logs/headlessclient-$RANDOM_ID.log"
+LOG_FILE="/logs/${HC_NAME}.log"
 
 # Infinite retry loop for the headless client
 while true; do
@@ -56,8 +55,8 @@ while true; do
 
   /arma3/arma3server \
     -client \
-    -connect=$ARMA_HOST \
-    -port=$ARMA_PORT \
+    -connect="$ARMA_HOST" \
+    -port="$ARMA_PORT" \
     -password="$ARMA_PASS" \
     $CPU_COUNT_PARAM \
     $EX_THREADS_PARAM \
@@ -70,7 +69,7 @@ while true; do
   echo "Headless client started with PID: $CLIENT_PID and ID: $RANDOM_ID"
 
   # Monitor log file for specific client errors
-  tail -n 0 -f "$LOG_FILE" | while read line; do
+  tail -n 0 -f "$LOG_FILE" | while read -r line; do
     echo "$line"
     if [[ "$line" == *"kicked"* ]] ||
        [[ "$line" == *"authentication failed"* ]] ||
