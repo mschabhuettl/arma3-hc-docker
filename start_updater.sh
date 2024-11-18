@@ -42,9 +42,10 @@ app_update 233780 validate
 // Install or update Mods based on arma3_hc_config.env
 EOF
 
-# Add each mod from ARMA_MODS_ARRAY to the install script
-for mod in "${ARMA_MODS_ARRAY[@]}"; do
-  echo "workshop_download_item 107410 @$mod validate" >> arma3_update_script.txt
+# Add each mod from ARMA_MODS to the install script
+IFS=';' read -ra MODS <<< "$ARMA_MODS"
+for mod in "${MODS[@]}"; do
+  echo "workshop_download_item 107410 $mod validate" >> arma3_update_script.txt
 done
 
 # Add exit command to SteamCMD script
