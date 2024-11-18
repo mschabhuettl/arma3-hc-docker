@@ -34,14 +34,10 @@ RUN mkdir -p /arma3
 WORKDIR /arma3
 
 # Copy necessary scripts
-ADD install_arma3.txt install_arma3.txt
-ADD start_updater.sh start_updater.sh
+COPY start_updater.sh /arma3/start_updater.sh
 
 # Ensure scripts are executable
-RUN chmod +x start_updater.sh
+RUN chmod +x /arma3/start_updater.sh
 
-# Install Arma 3 and launch the client
+# Start the updater script
 ENTRYPOINT ["/bin/bash", "start_updater.sh"]
-
-# Additional arguments for arma3server (such as -mod) can be passed as arguments
-CMD []
