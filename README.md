@@ -10,6 +10,9 @@ Welcome to the **Arma 3 Headless Client** repository! This project provides a Do
 - ⚙️ **Fully Configurable**: Customize using environment variables.
 - 🔄 **Automatic Updates**: Auto-install and update server files and mods.
 - 🔁 **Resilient Client Reconnects**: Built-in retry mechanism for reconnects.
+- 📂 **Persistent Data Storage**: Uses Docker volumes to store configuration and logs persistently.
+- 🛠️ **Separate Dockerfiles for Flexibility**: Different Dockerfiles for the updater and clients for better management.
+- 🤖 **Automated Mod Handling**: Automatically handles downloading and updating of mods.
 
 ---
 
@@ -125,6 +128,16 @@ HC_ADDITIONAL_PARAMS="-nosplash -world=empty -nosound"
 
 ---
 
+## 📂 **File Overview**
+- **`arma3_hc_config.env`**: Configuration file with server settings, mods, and credentials.
+- **`docker-compose.yml`**: Defines the services for the updater and headless clients.
+- **`Dockerfile.client`**: Dockerfile to create the container for the headless clients.
+- **`Dockerfile.updater`**: Dockerfile to create the container for updating server files and mods.
+- **`start_client.sh`**: Script executed to start the headless clients.
+- **`start_updater.sh`**: Script executed to update server files and mods.
+
+---
+
 ## 🔄 **Retry Mechanism**
 
 The startup script has an automatic retry feature to handle issues like:
@@ -148,6 +161,19 @@ The startup script has an automatic retry feature to handle issues like:
 | `ARMA_MODS`            | List of mods separated by semicolons.        | None                              |
 | `HC_NAME_PREFIX`       | Prefix for the headless client name.         | `arma3_hc_`                       |
 | `HC_ADDITIONAL_PARAMS` | Additional launch parameters for Arma 3.     | `-nosplash -world=empty -nosound` |
+
+---
+
+## 🛠️ **Dockerfile Details**
+- **`Dockerfile.client`**: This Dockerfile creates the container for running headless clients. It ensures that the client connects to the specified Arma 3 server and joins as a headless client, improving AI handling.
+- **`Dockerfile.updater`**: This Dockerfile creates the updater container, responsible for downloading and keeping the Arma 3 server files and mods up-to-date.
+
+---
+
+## ⚡ **Performance Tips**
+- **Scale Clients**: You can add more headless clients by defining additional services in the `docker-compose.yml` file. This helps distribute the load more effectively.
+- **Resource Allocation**: Ensure your server has enough CPU and RAM, as running multiple headless clients can be resource-intensive.
+- **Use SSDs**: Using SSD storage for `arma3_data` can significantly improve loading times and reduce lag.
 
 ---
 
