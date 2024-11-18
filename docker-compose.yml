@@ -24,6 +24,7 @@ services:
     volumes:
       - ./arma3_hc_config.env:/arma3/arma3_hc_config.env
       - arma3_data:/arma3:ro
+      - logs:/logs
     command: /bin/bash -c "source /arma3/arma3_hc_config.env && /scripts/start_client.sh"
     restart: always
 
@@ -39,8 +40,10 @@ services:
     volumes:
       - ./arma3_hc_config.env:/arma3/arma3_hc_config.env
       - arma3_data:/arma3:ro
+      - logs:/logs
     command: /bin/bash -c "source /arma3/arma3_hc_config.env && /scripts/start_client.sh"
     restart: always
 
 volumes:
   arma3_data:
+  logs:

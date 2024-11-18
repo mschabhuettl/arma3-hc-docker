@@ -4,6 +4,9 @@ set -e
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
+# Set default prefix if not provided
+HC_NAME_PREFIX=${HC_NAME_PREFIX:-"arma3_hc_"}
+
 # Generate a random ID for this instance
 RANDOM_ID=$(uuidgen | cut -c1-8)
 HC_NAME="${HC_NAME_PREFIX}${RANDOM_ID}"
@@ -11,6 +14,7 @@ echo "Generated Random ID: $RANDOM_ID"
 
 # Ensure necessary directories exist
 mkdir -p /root/.local/share/Arma\ 3/MPMissionsCache
+mkdir -p /logs
 
 # Default values for Arma 3 server connection
 ARMA_PORT=${ARMA_PORT:-2302}
@@ -39,7 +43,7 @@ fi
 
 # Variables for logs and identification
 HEADLESS_CLIENT_NAME="$HC_NAME"
-LOG_FILE="/arma3/headlessclient-$RANDOM_ID.log"
+LOG_FILE="/logs/headlessclient-$RANDOM_ID.log"
 
 # Infinite retry loop for the headless client
 while true; do
