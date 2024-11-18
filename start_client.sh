@@ -31,6 +31,12 @@ fi
 # Additional launch parameters from environment
 ADDITIONAL_PARAMS="$HC_ADDITIONAL_PARAMS"
 
+# Mod parameters if ARMA_MODS is defined
+MOD_PARAM=""
+if [ -n "$ARMA_MODS" ]; then
+  MOD_PARAM="-mod=${ARMA_MODS//;/;}"
+fi
+
 # Variables for logs and identification
 HEADLESS_CLIENT_NAME="$HC_NAME"
 LOG_FILE="/arma3/headlessclient-$RANDOM_ID.log"
@@ -52,6 +58,7 @@ while true; do
     $CPU_COUNT_PARAM \
     $EX_THREADS_PARAM \
     $ADDITIONAL_PARAMS \
+    $MOD_PARAM \
     -name="$HC_NAME" \
     >> "$LOG_FILE" 2>&1 &
 
