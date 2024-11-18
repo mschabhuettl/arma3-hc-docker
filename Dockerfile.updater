@@ -1,28 +1,47 @@
 # Dockerfile for the Updater Container
 
-# Base image with necessary tools
 FROM ubuntu:latest
 
-# Install necessary packages, including SteamCMD for Arma 3 installation
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    curl lib32gcc-s1 lib32stdc++6 && \
-    mkdir -p /arma3 && \
-    curl -o /steamcmd.tar.gz https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz && \
-    tar -xvzf /steamcmd.tar.gz -C / && \
-    rm /steamcmd.tar.gz && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# Set up apt and prepare the environment
+RUN apt-get update && apt-get install -y \
+    software-properties-common \
+    uuid-runtime \
+    locales \
+    && add-apt-repository multiverse \
+    && dpkg --add-architecture i386 \
+    && apt-get update
 
-# Set working directory to SteamCMD
-WORKDIR /steamcmd
+# Configure locales to avoid locale warnings
+RUN locale-gen en_US.UTF-8 && \
+    update-locale LANG=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
 
-# Copy the install script for Arma 3
-COPY install_arma3.txt /steamcmd/
+# Pre-configure debconf to accept the Steam License Agreement
+RUN echo "steam steam/question select I AGREE" | debconf-set-selections && \
+    echo "steam steam/license note ''" | debconf-set-selections
 
-# Environment variable for Steam credentials (optional; could be passed at runtime for better security)
-ENV STEAM_USER="" 
-ENV STEAM_PASS=""
+# Install steamcmd
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y steamcmd && \
+    mkdir -p /usr/games && \
+    ln -s $(which steamcmd) /usr/games/steamcmd
 
-# Command to run the updater script
-CMD ./steamcmd.sh +login "$STEAM_USER" "$STEAM_PASS" +runscript install_arma3.txt
+# Ensure the installation directory exists
+RUN mkdir -p /arma3
+
+# Set working directory
+WORKDIR /arma3
+
+# Copy necessary scripts
+ADD install_arma3.txt install_arma3.txt
+ADD start.sh start.sh
+
+# Ensure scripts are executable
+RUN chmod +x start.sh
+
+# Install Arma 3 and launch the client
+ENTRYPOINT ["/bin/bash", "start.sh"]
+
+# Additional arguments for arma3server (such as -mod) can be passed as arguments
+CMD []
