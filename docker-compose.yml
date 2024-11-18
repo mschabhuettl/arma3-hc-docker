@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: Dockerfile.updater
     container_name: arma3-updater
+    env_file:
+      - ./arma3_hc_config.env
     volumes:
       - ./arma3_hc_config.env:/arma3/arma3_hc_config.env
       - arma3_data:/arma3
@@ -17,6 +19,8 @@ services:
     container_name: arma3-client-0
     depends_on:
       - updater
+    env_file:
+      - ./arma3_hc_config.env
     volumes:
       - ./arma3_hc_config.env:/arma3/arma3_hc_config.env
       - arma3_data:/arma3:ro
@@ -30,6 +34,8 @@ services:
     container_name: arma3-client-1
     depends_on:
       - updater
+    env_file:
+      - ./arma3_hc_config.env
     volumes:
       - ./arma3_hc_config.env:/arma3/arma3_hc_config.env
       - arma3_data:/arma3:ro
