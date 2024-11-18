@@ -39,6 +39,7 @@ jobs:
       - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
+          registry: ghcr.io  # Explicitly set the GHCR registry
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN_ARMA3_HC_DOCKER }}
 
