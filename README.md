@@ -26,26 +26,26 @@ cd arma3-headless-client-docker
 ## **Build Process**
 
 ### **Initial Setup**
-1. **Build the Updater**
+1. **Build the Updater**  
+   Run the following command to build the updater container:
    ```bash
-docker compose build updater
-```
-   This will build the updater container.
+   docker compose build updater
+   ```
 
-2. **Start the Updater**
+2. **Start the Updater**  
+   This will start the updater container, which will download the required Arma 3 server files:
    ```bash
-docker compose up updater
-```
-   This will start the updater container, which will download the required Arma 3 server files.
+   docker compose up updater
+   ```
 
-3. **Edit the Configuration File**
+3. **Edit the Configuration File**  
    Modify `arma3_hc_config.env` to suit your needs, including setting up mods, server details, and credentials.
 
-4. **Start the Headless Clients**
+4. **Start the Headless Clients**  
+   Run the following command to start the headless clients using the updated configuration:
    ```bash
-docker compose up -d arma3-client-0 arma3-client-1
-```
-   This will start the headless clients using the updated configuration.
+   docker compose up -d arma3-client-0 arma3-client-1
+   ```
 
 ---
 
