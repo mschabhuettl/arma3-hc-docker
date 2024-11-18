@@ -1,0 +1,72 @@
+name: Advanced Build and Push Docker CI/CD Workflow
+
+on:
+  push:
+    branches:
+      - main  # Trigger on pushes to the main branch
+      - "release/*"  # Trigger on release branches
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write  # For GitHub Container Registry
+
+    strategy:
+      matrix:
+        architecture: [amd64]  # Only build for amd64
+        image: [updater, client]  # Build both images
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Log in to Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Step 3: Log in to GitHub Container Registry (GHCR)
+      - name: Log in to GHCR
+        uses: docker/login-action@v2
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      # Step 4: Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Step 5: Cache Docker layers
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-docker-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-docker-
+
+      # Step 6: Build and push the image
+      - name: Build and Push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: Dockerfile.${{ matrix.image }}
+          platforms: linux/${{ matrix.architecture }}
+          push: true
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+          tags: |
+            mschabhuettl/arma3-hc-docker-${{ matrix.image }}:latest
+            mschabhuettl/arma3-hc-docker-${{ matrix.image }}:${{ github.sha }}
+            ghcr.io/${{ github.repository_owner }}/arma3-hc-docker-${{ matrix.image }}:latest
+            ghcr.io/${{ github.repository_owner }}/arma3-hc-docker-${{ matrix.image }}:${{ github.sha }}
