@@ -38,7 +38,7 @@ ADDITIONAL_PARAMS="$HC_ADDITIONAL_PARAMS"
 # Mod parameters if ARMA_MODS is defined
 MOD_PARAM=""
 if [ -n "$ARMA_MODS" ]; then
-  MODS_WITH_PATH=$(echo "$ARMA_MODS" | tr ';' '\n' | sed 's|^|/arma3/steamapps/workshop/content/107410/|' | tr '\n' ';')
+  MODS_WITH_PATH=$(echo "$ARMA_MODS" | tr ';' '\n' | sed 's|^|/arma3/steamapps/workshop/content/107410/&/addons|' | tr '\n' ';')
   MOD_PARAM="-mod=${MODS_WITH_PATH%;}"
 fi
 
