@@ -141,7 +141,7 @@ The included startup script implements an automatic retry mechanism for client r
 ## **Configuration**
 
 ### **Environment Variables**
-The following variables can be configured via `.env` files or directly in the `docker run` command:
+The following variables can be configured via `.env` files:
 
 | Variable               | Description                                  | Default                           |
 |------------------------|----------------------------------------------|-----------------------------------|
