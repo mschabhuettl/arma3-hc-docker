@@ -51,32 +51,37 @@ $STEAMCMD_PATH +login $STEAM_USER $STEAM_PASS +runscript "$UPDATE_SCRIPT"
 
 if [ $? -eq 0 ]; then
   echo "Arma 3 Dedicated Server installation/update completed successfully."
+
+  # Create symlinks for mods in /arma3
+  MODS_DIR="/arma3/steamapps/workshop/content/107410"
+  TARGET_DIR="/arma3"
+
+  if [ -d "$MODS_DIR" ]; then
+    echo "Creating symlinks for mods in $TARGET_DIR..."
+    for mod_path in "$MODS_DIR"/*; do
+      echo "Processing mod: $mod_path"
+      if [ -d "$mod_path" ]; then
+        mod_id=$(basename "$mod_path")
+        symlink_path="$TARGET_DIR/@$mod_id"
+
+        # Remove existing symlink if it exists
+        if [ -e "$symlink_path" ]; then
+          echo "Removing existing symlink or directory: $symlink_path"
+          rm -rf "$symlink_path"
+        fi
+
+        # Create the new symlink
+        ln -s "$mod_path" "$symlink_path"
+        echo "Symlink created: $symlink_path -> $mod_path"
+      else
+        echo "Warning: $mod_path is not a directory"
+      fi
+    done
+    echo "Symlinks created successfully."
+  else
+    echo "No mods found in $MODS_DIR." >&2
+  fi
 else
   echo "Error: Arma 3 Dedicated Server installation/update failed." >&2
   exit 1
-fi
-
-# Create symlinks for mods in /arma3
-MODS_DIR="/arma3/steamapps/workshop/content/107410"
-TARGET_DIR="/arma3"
-
-if [ -d "$MODS_DIR" ]; then
-  echo "Creating symlinks for mods in $TARGET_DIR..."
-  for mod_path in "$MODS_DIR"/*; do
-    if [ -d "$mod_path" ]; then
-      mod_id=$(basename "$mod_path")
-      symlink_path="$TARGET_DIR/@$mod_id"
-
-      # Remove existing symlink if it exists
-      if [ -L "$symlink_path" ]; then
-        rm "$symlink_path"
-      fi
-
-      # Create the new symlink
-      ln -s "$mod_path" "$symlink_path"
-    fi
-  done
-  echo "Symlinks created successfully."
-else
-  echo "No mods found in $MODS_DIR." >&2
 fi
