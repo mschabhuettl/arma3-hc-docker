@@ -1,6 +1,8 @@
 services:
   updater:
-    image: mschabhuettl/arma3-hc-docker-updater:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.updater
     container_name: arma3-updater
     env_file:
       - ./arma3_hc_config.env
@@ -11,7 +13,9 @@ services:
     restart: "no"
 
   arma3-client-0:
-    image: mschabhuettl/arma3-hc-docker-client:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.client
     container_name: arma3-client-0
     env_file:
       - ./arma3_hc_config.env
@@ -23,7 +27,9 @@ services:
     restart: always
 
   arma3-client-1:
-    image: mschabhuettl/arma3-hc-docker-client:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.client
     container_name: arma3-client-1
     env_file:
       - ./arma3_hc_config.env
