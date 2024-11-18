@@ -35,10 +35,10 @@ fi
 # Additional launch parameters from environment
 ADDITIONAL_PARAMS="$HC_ADDITIONAL_PARAMS"
 
-# Mod parameters if ARMA_MODS is defined
 MOD_PARAM=""
 if [ -n "$ARMA_MODS" ]; then
-  MOD_PARAM="-mod=${ARMA_MODS//;/;}"
+  MODS_WITH_PREFIX=$(echo "$ARMA_MODS" | tr ';' '\n' | sed 's|^|@|' | tr '\n' ';')
+  MOD_PARAM="-mod=${MODS_WITH_PREFIX%;}"
 fi
 
 # Variables for logs and identification
