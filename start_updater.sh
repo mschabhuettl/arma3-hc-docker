@@ -25,8 +25,8 @@ else
   exit 1
 fi
 
-# Create a new install_arma3.txt script with mods
-cat << EOF > install_arma3.txt
+# Create a new arma3_update_script.txt script with mods
+cat << EOF > arma3_update_script.txt
 // Stop the script if any commands fail
 @ShutdownOnFailedCommand 1
 
@@ -42,17 +42,17 @@ app_update 233780 validate
 // Install or update Mods based on arma3_hc_config.env
 EOF
 
-# Add each mod from ARMA_MODS_ARRAY to the install_arma3.txt script
+# Add each mod from ARMA_MODS_ARRAY to the arma3_update_script.txt script
 for mod in "${ARMA_MODS_ARRAY[@]}"; do
-  echo "workshop_download_item 107410 $mod validate" >> install_arma3.txt
+  echo "workshop_download_item 107410 $mod validate" >> arma3_update_script.txt
 done
 
 # Add exit command to SteamCMD script
-echo "quit" >> install_arma3.txt
+echo "quit" >> arma3_update_script.txt
 
 # Install or update Arma 3 files
 echo "Running SteamCMD to update Arma 3 files..."
-$STEAMCMD_PATH +login $STEAM_USER $STEAM_PASS +runscript "$INSTALL_SCRIPT"
+$STEAMCMD_PATH +login $STEAM_USER $STEAM_PASS +runscript arma3_update_script.txt
 
 if [ $? -eq 0 ]; then
   echo "Arma 3 Dedicated Server installation/update completed successfully."
