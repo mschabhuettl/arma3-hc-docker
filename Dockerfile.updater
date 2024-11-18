@@ -1,0 +1,26 @@
+# Base image with necessary tools
+FROM ubuntu:latest
+
+# Install necessary packages, including SteamCMD for Arma 3 installation
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    curl lib32gcc-s1 lib32stdc++6 && \
+    mkdir -p /arma3 && \
+    curl -o /steamcmd.tar.gz https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz && \
+    tar -xvzf /steamcmd.tar.gz -C / && \
+    rm /steamcmd.tar.gz && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set working directory to SteamCMD
+WORKDIR /steamcmd
+
+# Copy the install script for Arma 3
+COPY install_arma3.txt /steamcmd/
+
+# Environment variable for Steam credentials (optional; could be passed at runtime for better security)
+ENV STEAM_USER="" 
+ENV STEAM_PASS=""
+
+# Command to run the updater script
+CMD ./steamcmd.sh +login "$STEAM_USER" "$STEAM_PASS" +runscript install_arma3.txt

@@ -1,12 +1,35 @@
 services:
+  updater:
+    build:
+      context: .
+      dockerfile: Dockerfile.updater
+    container_name: arma3-updater
+    environment:
+      - STEAM_USER=${STEAM_USER}
+      - STEAM_PASS=${STEAM_PASS}
+    volumes:
+      - arma3_data:/arma3
+    restart: "no"
+
   arma3-client-0:
-    image: arma3-headless-client
+    build: .
     container_name: arma3-client-0
+    depends_on:
+      - updater
     env_file: client.env
+    volumes:
+      - arma3_data:/arma3:ro
     restart: always
 
   arma3-client-1:
-    image: arma3-headless-client
+    build: .
     container_name: arma3-client-1
+    depends_on:
+      - updater
     env_file: client.env
+    volumes:
+      - arma3_data:/arma3:ro
     restart: always
+
+volumes:
+  arma3_data:
