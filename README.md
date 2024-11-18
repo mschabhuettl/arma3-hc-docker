@@ -17,8 +17,8 @@ Welcome to the **Arma 3 Headless Client** repository! This project provides a Do
 
 ### 1️⃣ **Clone the Repository**
 ```bash
-git clone https://github.com/mschabhuettl/arma3-headless-client-docker.git
-cd arma3-headless-client-docker
+git clone https://github.com/mschabhuettl/arma3-hc-docker.git
+cd arma3-hc-docker
 ```
 
 ### 2️⃣ **Build the Updater**
