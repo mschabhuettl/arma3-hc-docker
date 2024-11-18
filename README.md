@@ -6,9 +6,9 @@ This repository provides a Docker image for deploying Arma 3 headless clients. I
 
 ## **Features**
 - Dockerized Arma 3 headless client for easy deployment.
-- Compatible with multiple clients via `docker-compose`.
+- Compatible with multiple clients via `docker compose`.
 - Fully configurable using environment variables.
-- Automatically installs or updates Arma 3 server files.
+- Automatically installs or updates Arma 3 server files and mods.
 - Resilient retry mechanism for client reconnects in case of errors.
 
 ---
@@ -25,64 +25,106 @@ cd arma3-headless-client-docker
 
 ## **Build Process**
 
-### **Build the Docker Image Locally**
-To build the Docker image, execute the following command inside the cloned repository:
-```bash
-docker build -t arma3-headless-client .
-```
+### **Initial Setup**
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/mschabhuettl/arma3-headless-client-docker.git
+   cd arma3-headless-client-docker
+   ```
+2. **Start the Updater**
+   ```bash
+   docker compose up -d updater
+   ```
+   This will build the updater container and download the required Arma 3 server files.
 
-- **`-t arma3-headless-client`**: Assigns the name `arma3-headless-client` to the built image.
+3. **Edit the Configuration File**
+   Modify `arma3_hc_config.env` to suit your needs, including setting up mods, server details, and credentials.
+
+4. **Start the Headless Clients**
+   ```bash
+   docker compose up -d arma3-client-0 arma3-client-1
+   ```
+   This will start the headless clients using the updated configuration.
 
 ---
 
 ## **Usage**
 
-### **Run a Single Headless Client**
-Use the following command to run a single headless client container:
-```bash
-docker run -it arma3-headless-client 
-  -e STEAM_USER=<your_steam_username> 
-  -e STEAM_PASS=<your_steam_password> 
-  -e ARMA_HOST=<server_address> 
-  -e ARMA_PORT=<server_port> 
-  -e ARMA_PASS=<server_password>
-```
-
-Replace the placeholders `<...>` with your actual credentials and server details.
-
----
-
 ### **Run Multiple Clients with Docker Compose**
-You can define and run multiple clients using `docker-compose`.
+You can define and run multiple clients using `docker compose`.
 
 **`docker-compose.yml` Example:**
 ```yaml
 services:
+  updater:
+    build:
+      context: .
+      dockerfile: Dockerfile.updater
+    container_name: arma3-updater
+    env_file:
+      - ./arma3_hc_config.env
+    volumes:
+      - ./arma3_hc_config.env:/arma3/arma3_hc_config.env
+      - arma3_data:/arma3
+    command: /bin/bash -c "source /arma3/arma3_hc_config.env && /arma3/start_updater.sh"
+    restart: "no"
+
   arma3-client-0:
-    image: arma3-headless-client
+    build:
+      context: .
+      dockerfile: Dockerfile.client
     container_name: arma3-client-0
-    env_file: client.env
+    depends_on:
+      - updater
+    env_file:
+      - ./arma3_hc_config.env
+    volumes:
+      - ./arma3_hc_config.env:/arma3/arma3_hc_config.env
+      - arma3_data:/arma3:ro
+      - logs:/logs
+    command: /bin/bash -c "source /arma3/arma3_hc_config.env && /scripts/start_client.sh"
     restart: always
 
   arma3-client-1:
-    image: arma3-headless-client
+    build:
+      context: .
+      dockerfile: Dockerfile.client
     container_name: arma3-client-1
-    env_file: client.env
+    depends_on:
+      - updater
+    env_file:
+      - ./arma3_hc_config.env
+    volumes:
+      - ./arma3_hc_config.env:/arma3/arma3_hc_config.env
+      - arma3_data:/arma3:ro
+      - logs:/logs
+    command: /bin/bash -c "source /arma3/arma3_hc_config.env && /scripts/start_client.sh"
     restart: always
+
+volumes:
+  arma3_data:
+  logs:
 ```
 
-**Environment File Example (`client.env`):**
+**Environment File Example (`arma3_hc_config.env`):**
 ```env
+# Steam credentials
 STEAM_USER=your_steam_username
 STEAM_PASS=your_steam_password
+
+# Arma 3 server connection details
 ARMA_HOST=your_server_address
 ARMA_PORT=2302
 ARMA_PASS=your_server_password
-```
 
-**Start the Clients:**
-```bash
-docker-compose up -d
+# Arma 3 Mods
+ARMA_MODS="mod1;mod2;mod3"
+
+# Headless Client parameters
+HC_NAME_PREFIX=arma3_hc_  # Prefix for the headless client name
+
+# Additional launch parameters
+HC_ADDITIONAL_PARAMS="-nosplash -world=empty -nosound"
 ```
 
 ---
@@ -101,13 +143,16 @@ The included startup script implements an automatic retry mechanism for client r
 ### **Environment Variables**
 The following variables can be configured via `.env` files or directly in the `docker run` command:
 
-| Variable     | Description                                  | Default |
-|--------------|----------------------------------------------|---------|
-| `STEAM_USER` | Steam username for logging in.               | None    |
-| `STEAM_PASS` | Steam password for logging in.               | None    |
-| `ARMA_HOST`  | IP address or hostname of the Arma 3 server. | None    |
-| `ARMA_PORT`  | Port for the Arma 3 server.                  | `2302`  |
-| `ARMA_PASS`  | Password for the Arma 3 server.              | None    |
+| Variable               | Description                                  | Default                           |
+|------------------------|----------------------------------------------|-----------------------------------|
+| `STEAM_USER`           | Steam username for logging in.               | None                              |
+| `STEAM_PASS`           | Steam password for logging in.               | None                              |
+| `ARMA_HOST`            | IP address or hostname of the Arma 3 server. | None                              |
+| `ARMA_PORT`            | Port for the Arma 3 server.                  | `2302`                            |
+| `ARMA_PASS`            | Password for the Arma 3 server.              | None                              |
+| `ARMA_MODS`            | List of mods separated by semicolons.        | None                              |
+| `HC_NAME_PREFIX`       | Prefix for the headless client name.         | `arma3_hc_`                       |
+| `HC_ADDITIONAL_PARAMS` | Additional launch parameters for Arma 3.     | `-nosplash -world=empty -nosound` |
 
 ---
 
