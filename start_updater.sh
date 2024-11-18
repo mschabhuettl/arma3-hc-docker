@@ -39,7 +39,7 @@ force_install_dir /arma3
 app_update 233780 validate
 
 // Install or update Mods based on ARMA_MODS
-$(IFS=';' read -ra MODS <<< "$ARMA_MODS"; for mod in "${MODS[@]}"; do echo "workshop_download_item 107410 $mod validate"; done)
+$(IFS=';' read -ra MODS <<< "$ARMA_MODS"; for mod in "${MODS[@]}"; do echo "force_install_dir /arma3/@$mod"; echo "workshop_download_item 107410 $mod validate"; done)
 
 // Exit SteamCMD
 quit
