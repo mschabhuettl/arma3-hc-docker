@@ -73,8 +73,6 @@ services:
       context: .
       dockerfile: Dockerfile.client
     container_name: arma3-client-0
-    depends_on:
-      - updater
     env_file:
       - ./arma3_hc_config.env
     volumes:
@@ -89,8 +87,6 @@ services:
       context: .
       dockerfile: Dockerfile.client
     container_name: arma3-client-1
-    depends_on:
-      - updater
     env_file:
       - ./arma3_hc_config.env
     volumes:
