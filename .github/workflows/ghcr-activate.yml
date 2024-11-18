@@ -20,6 +20,7 @@ jobs:
       - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
+          registry: ghcr.io  # Explicitly target GHCR
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN_ARMA3_HC_DOCKER }}
 
@@ -31,3 +32,4 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository_owner }}/dummy-image:latest
+            ghcr.io/${{ github.repository_owner }}/dummy-image:${{ github.sha }}
