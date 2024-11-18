@@ -6,6 +6,7 @@ export LC_ALL=en_US.UTF-8
 
 # Generate a random ID for this instance
 RANDOM_ID=$(uuidgen | cut -c1-8)
+HC_NAME="${HC_NAME_PREFIX}${RANDOM_ID}"
 echo "Generated Random ID: $RANDOM_ID"
 
 # Ensure necessary directories exist
@@ -16,8 +17,22 @@ ARMA_PORT=${ARMA_PORT:-2302}
 ARMA_HOST=${ARMA_HOST:-"127.0.0.1"}
 ARMA_PASS=${ARMA_PASS:-""}
 
+# Variables for additional parameters
+CPU_COUNT_PARAM=""
+if [ -n "$HC_CPU_COUNT" ]; then
+  CPU_COUNT_PARAM="-cpuCount=$HC_CPU_COUNT"
+fi
+
+EX_THREADS_PARAM=""
+if [ -n "$HC_EX_THREADS" ]; then
+  EX_THREADS_PARAM="-exThreads=$HC_EX_THREADS"
+fi
+
+# Additional launch parameters from environment
+ADDITIONAL_PARAMS="$HC_ADDITIONAL_PARAMS"
+
 # Variables for logs and identification
-HEADLESS_CLIENT_NAME="headlessclient-$RANDOM_ID"
+HEADLESS_CLIENT_NAME="$HC_NAME"
 LOG_FILE="/arma3/headlessclient-$RANDOM_ID.log"
 
 # Infinite retry loop for the headless client
@@ -34,7 +49,10 @@ while true; do
     -connect=$ARMA_HOST \
     -port=$ARMA_PORT \
     -password="$ARMA_PASS" \
-    -noSound \
+    $CPU_COUNT_PARAM \
+    $EX_THREADS_PARAM \
+    $ADDITIONAL_PARAMS \
+    -name="$HC_NAME" \
     >> "$LOG_FILE" 2>&1 &
 
   CLIENT_PID=$!
@@ -43,9 +61,9 @@ while true; do
   # Monitor log file for specific client errors
   tail -n 0 -f "$LOG_FILE" | while read line; do
     echo "$line"
-    if [[ "$line" == *"kicked"* ]] || 
-       [[ "$line" == *"authentication failed"* ]] || 
-       [[ "$line" == *"Invalid ticket"* ]] || 
+    if [[ "$line" == *"kicked"* ]] ||
+       [[ "$line" == *"authentication failed"* ]] ||
+       [[ "$line" == *"Invalid ticket"* ]] ||
        [[ "$line" == *"not responding"* ]]; then
       echo "Detected issue for Headless Client $RANDOM_ID. Restarting..."
       kill -9 $CLIENT_PID
