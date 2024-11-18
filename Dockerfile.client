@@ -19,14 +19,15 @@ ENV LC_ALL=en_US.UTF-8
 # Set working directory
 WORKDIR /arma3
 
-# Copy the start script for the client
-COPY start_client.sh /arma3/start_client.sh
+# Copy the start script for the client to a separate directory
+RUN mkdir -p /scripts
+COPY start_client.sh /scripts/start_client.sh
 
 # Ensure scripts are executable
-RUN chmod +x /arma3/start_client.sh
+RUN chmod +x /scripts/start_client.sh
 
 # Launch the Arma 3 Headless Client
-ENTRYPOINT ["/bin/bash", "start_client.sh"]
+ENTRYPOINT ["/bin/bash", "/scripts/start_client.sh"]
 
 # Additional arguments for arma3server (such as -mod) can be passed as arguments
 CMD []
