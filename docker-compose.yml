@@ -4,9 +4,10 @@ services:
       context: .
       dockerfile: Dockerfile.updater
     container_name: arma3-updater
-    env_file: arma3_hc_config.env
     volumes:
+      - ./arma3_hc_config.env:/arma3/arma3_hc_config.env
       - arma3_data:/arma3
+    command: /bin/bash -c "source /arma3/arma3_hc_config.env && /arma3/start_updater.sh"
     restart: "no"
 
   arma3-client-0:
@@ -16,9 +17,10 @@ services:
     container_name: arma3-client-0
     depends_on:
       - updater
-    env_file: arma3_hc_config.env
     volumes:
+      - ./arma3_hc_config.env:/arma3/arma3_hc_config.env
       - arma3_data:/arma3:ro
+    command: /bin/bash -c "source /arma3/arma3_hc_config.env && /arma3/start_client.sh"
     restart: always
 
   arma3-client-1:
@@ -28,9 +30,10 @@ services:
     container_name: arma3-client-1
     depends_on:
       - updater
-    env_file: arma3_hc_config.env
     volumes:
+      - ./arma3_hc_config.env:/arma3/arma3_hc_config.env
       - arma3_data:/arma3:ro
+    command: /bin/bash -c "source /arma3/arma3_hc_config.env && /arma3/start_client.sh"
     restart: always
 
 volumes:
