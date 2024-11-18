@@ -17,16 +17,15 @@ if [ ! -x "$STEAMCMD_PATH" ]; then
   exit 1
 fi
 
-# Load environment variables
-if [ -f "arma3_hc_config.env" ]; then
-  source arma3_hc_config.env
-else
+# Verify existence of arma3_hc_config.env
+if [ ! -f "/arma3/arma3_hc_config.env" ]; then
   >&2 echo "Error: arma3_hc_config.env not found."
   exit 1
 fi
 
-# Create a new arma3_update_script.txt script with mods
-cat << EOF > arma3_update_script.txt
+# Create the update script for Arma 3
+UPDATE_SCRIPT="/arma3/arma3_update_script.txt"
+cat <<EOL > "$UPDATE_SCRIPT"
 // Stop the script if any commands fail
 @ShutdownOnFailedCommand 1
 
@@ -39,21 +38,16 @@ force_install_dir /arma3
 // Install or update the Arma 3 Dedicated Server files (App ID: 233780)
 app_update 233780 validate
 
-// Install or update Mods based on arma3_hc_config.env
-EOF
+// Install or update Mods based on ARMA_MODS
+$(IFS=';' read -ra MODS <<< "$ARMA_MODS"; for mod in "${MODS[@]}"; do echo "workshop_download_item 107410 $mod validate"; done)
 
-# Add each mod from ARMA_MODS to the install script
-IFS=';' read -ra MODS <<< "$ARMA_MODS"
-for mod in "${MODS[@]}"; do
-  echo "workshop_download_item 107410 $mod validate" >> arma3_update_script.txt
-done
+// Exit SteamCMD
+quit
+EOL
 
-# Add exit command to SteamCMD script
-echo "quit" >> arma3_update_script.txt
-
-# Install or update Arma 3 files
+# Install or update Arma 3 files using steamcmd
 echo "Running SteamCMD to update Arma 3 files..."
-$STEAMCMD_PATH +login $STEAM_USER $STEAM_PASS +runscript arma3_update_script.txt
+$STEAMCMD_PATH +login $STEAM_USER $STEAM_PASS +runscript "$UPDATE_SCRIPT"
 
 if [ $? -eq 0 ]; then
   echo "Arma 3 Dedicated Server installation/update completed successfully."
