@@ -18,47 +18,70 @@ Welcome to the **Arma 3 Headless Client** repository! This project provides a Do
 
 ## 🚀 **Getting Started**
 
-### 1️⃣ **Clone the Repository**
+### 1️⃣ **Option 1: Using Prebuilt Images**
+The simplest way to get started is to use the prebuilt images hosted on Docker Hub.
+
+#### **Step 1: Create Configuration**
+Edit the `arma3_hc_config.env` file to match your Arma 3 server setup.
+
+#### **Step 2: Run Updater**
+Run the updater to download the Arma 3 server files and mods:
+```bash
+docker compose up updater
+```
+
+#### **Step 3: Start Headless Clients**
+Start the headless clients:
+```bash
+docker compose up -d arma3-client-0 arma3-client-1
+```
+
+#### **Prebuilt Images Used**
+The following Docker Hub images are used:
+- `mschabhuettl/arma3-hc-docker-updater:latest`
+- `mschabhuettl/arma3-hc-docker-client:latest`
+
+---
+
+### 2️⃣ **Option 2: Custom Building**
+If you prefer to build the images locally:
+
+#### **Step 1: Clone the Repository**
 ```bash
 git clone https://github.com/mschabhuettl/arma3-hc-docker.git
 cd arma3-hc-docker
 ```
 
-### 2️⃣ **Build the Updater**
+#### **Step 2: Build the Updater**
 Build the updater container:
 ```bash
-docker compose build updater
+docker compose -f docker-compose.custom-build.yml build updater
 ```
 
-### 3️⃣ **Configure Settings**
+#### **Step 3: Configure Settings**
 Edit `arma3_hc_config.env` to fit your needs (mods, server details, credentials, etc.).
 
-### 4️⃣ **Start the Updater**
+#### **Step 4: Start the Updater**
 Start the updater to download the required Arma 3 server files:
 ```bash
-docker compose up updater
+docker compose -f docker-compose.custom-build.yml up updater
 ```
 
-### 5️⃣ **Run Headless Clients**
-Start the headless clients using the updated configuration:
+#### **Step 5: Run Headless Clients**
+Start the headless clients:
 ```bash
-docker compose up -d arma3-client-0 arma3-client-1
+docker compose -f docker-compose.custom-build.yml up -d arma3-client-0 arma3-client-1
 ```
 
 ---
 
-## 🔧 **Usage**
+## 🔧 **Docker Compose Examples**
 
-### **Run Multiple Clients with Docker Compose**
-With `docker compose`, you can easily define and manage multiple clients.
-
-**Example `docker-compose.yml`**:
+### **Prebuilt Image Compose File**
 ```yaml
 services:
   updater:
-    build:
-      context: .
-      dockerfile: Dockerfile.updater
+    image: mschabhuettl/arma3-hc-docker-updater:latest
     container_name: arma3-updater
     env_file:
       - ./arma3_hc_config.env
@@ -69,9 +92,7 @@ services:
     restart: "no"
 
   arma3-client-0:
-    build:
-      context: .
-      dockerfile: Dockerfile.client
+    image: mschabhuettl/arma3-hc-docker-client:latest
     container_name: arma3-client-0
     env_file:
       - ./arma3_hc_config.env
@@ -83,9 +104,7 @@ services:
     restart: always
 
   arma3-client-1:
-    build:
-      context: .
-      dockerfile: Dockerfile.client
+    image: mschabhuettl/arma3-hc-docker-client:latest
     container_name: arma3-client-1
     env_file:
       - ./arma3_hc_config.env
