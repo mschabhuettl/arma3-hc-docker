@@ -52,17 +52,40 @@ $STEAMCMD_PATH +login $STEAM_USER $STEAM_PASS +runscript "$UPDATE_SCRIPT"
 if [ $? -eq 0 ]; then
   echo "Arma 3 Dedicated Server installation/update completed successfully."
 
-  # Create symlinks for mods in /arma3
+  # Create lowercase symlinks of mods in /arma3/mods_lowercase
   MODS_DIR="/arma3/steamapps/workshop/content/107410"
-  TARGET_DIR="/arma3"
+  LOWERCASE_MODS_DIR="/arma3/mods_lowercase"
 
   if [ -d "$MODS_DIR" ]; then
-    echo "Creating symlinks for mods in $TARGET_DIR..."
+    echo "Creating lowercase symlinks of mods in $LOWERCASE_MODS_DIR..."
+    mkdir -p "$LOWERCASE_MODS_DIR"
     for mod_path in "$MODS_DIR"/*; do
-      echo "Processing mod: $mod_path"
       if [ -d "$mod_path" ]; then
         mod_id=$(basename "$mod_path")
-        symlink_path="$TARGET_DIR/@$mod_id"
+        lowercase_mod_dir="$LOWERCASE_MODS_DIR/@$mod_id"
+
+        # Remove existing lowercase directory if it exists
+        if [ -e "$lowercase_mod_dir" ]; then
+          echo "Removing existing symlink or directory: $lowercase_mod_dir"
+          rm -rf "$lowercase_mod_dir"
+        fi
+
+        # Create symlink to lowercase directory
+        ln -s "$mod_path" "$lowercase_mod_dir"
+        echo "Symlink created: $lowercase_mod_dir -> $mod_path"
+      else
+        echo "Warning: $mod_path is not a directory"
+      fi
+    done
+    echo "Lowercase symlinks created successfully."
+
+    # Create symlinks for mods in /arma3
+    TARGET_DIR="/arma3"
+    echo "Creating symlinks for mods in $TARGET_DIR..."
+    for mod_path in "$LOWERCASE_MODS_DIR"/*; do
+      if [ -d "$mod_path" ]; then
+        mod_id=$(basename "$mod_path")
+        symlink_path="$TARGET_DIR/$mod_id"
 
         # Remove existing symlink if it exists
         if [ -e "$symlink_path" ]; then
