@@ -7,9 +7,15 @@ export LC_ALL=en_US.UTF-8
 # Set default prefix if not provided
 HC_NAME_PREFIX=${HC_NAME_PREFIX:-"arma3_hc_"}
 
-# Generate a random ID for this instance
-RANDOM_ID=$(uuidgen | cut -c1-8)
-HC_NAME="${HC_NAME_PREFIX}${RANDOM_ID}"
+# Generate a unique random ID for this instance
+while :; do
+  RANDOM_ID=$(uuidgen | cut -c1-8)
+  HC_NAME="${HC_NAME_PREFIX}${RANDOM_ID}"
+  if [ ! -e "/logs/${HC_NAME}.log" ]; then
+    break
+  fi
+  echo "Random ID $RANDOM_ID already exists, generating a new one..."
+done
 echo "Generated Random ID: $RANDOM_ID"
 
 # Ensure necessary directories exist
