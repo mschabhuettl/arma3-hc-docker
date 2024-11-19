@@ -51,7 +51,7 @@ LOG_FILE="/logs/${HC_NAME}.log"
 
 # Infinite retry loop for the headless client
 while true; do
-  echo "Starting Arma 3 headless client with ID: $RANDOM_ID..."
+  echo "Starting Arma 3 headless client with name: $HC_NAME, ID: $RANDOM_ID..."
 
   if [ ! -x "/arma3/arma3server" ]; then
     >&2 echo "Error: arma3server not found or not executable in /arma3."
@@ -71,7 +71,7 @@ while true; do
     >> "$LOG_FILE" 2>&1 &
 
   CLIENT_PID=$!
-  echo "Headless client started with PID: $CLIENT_PID and ID: $RANDOM_ID"
+  echo "Headless client started with name: $HC_NAME, PID: $CLIENT_PID, and ID: $RANDOM_ID"
 
   # Monitor log file for specific client errors
   tail -n 0 -f "$LOG_FILE" | while read -r line; do
@@ -80,12 +80,12 @@ while true; do
        [[ "$line" == *"authentication failed"* ]] ||
        [[ "$line" == *"Invalid ticket"* ]] ||
        [[ "$line" == *"not responding"* ]]; then
-      echo "Detected issue for Headless Client $RANDOM_ID. Restarting..."
+      echo "Detected issue for Headless Client $HC_NAME (ID: $RANDOM_ID). Restarting..."
       kill -9 $CLIENT_PID
       break
     fi
   done
 
-  echo "Client $RANDOM_ID stopped unexpectedly. Restarting in 10 seconds..."
+  echo "Client $HC_NAME (ID: $RANDOM_ID) stopped unexpectedly. Restarting in 10 seconds..."
   sleep 10
 done
