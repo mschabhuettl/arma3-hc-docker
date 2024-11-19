@@ -41,7 +41,7 @@ if [ -n "$ARMA_MODS" ]; then
   MODS_WITH_AT=""
   IFS=';' read -ra MODS <<< "$ARMA_MODS"
   for mod in "${MODS[@]}"; do
-    MODS_WITH_AT+="@${mod};"
+    MODS_WITH_AT+="mods/@${mod};"
   done
   MOD_PARAM="-mod=${MODS_WITH_AT%;}"
 fi
