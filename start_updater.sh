@@ -70,9 +70,18 @@ if [ $? -eq 0 ]; then
           rm -rf "$lowercase_mod_dir"
         fi
 
-        # Create symlink to lowercase directory
-        ln -s "$mod_path" "$lowercase_mod_dir"
-        echo "Symlink created: $lowercase_mod_dir -> $mod_path"
+        # Create lowercase symlinks for all files and directories inside the mod
+        mkdir -p "$lowercase_mod_dir"
+        find "$mod_path" -print0 | while IFS= read -r -d '' file; do
+          relative_path="${file#$mod_path}"
+          lowercase_path="$lowercase_mod_dir$(echo "$relative_path" | tr '[:upper:]' '[:lower:]')"
+          if [ -d "$file" ]; then
+            mkdir -p "$lowercase_path"
+          else
+            ln -s "$file" "$lowercase_path"
+          fi
+        done
+        echo "Lowercase symlinks created for mod: $lowercase_mod_dir"
       else
         echo "Warning: $mod_path is not a directory"
       fi
