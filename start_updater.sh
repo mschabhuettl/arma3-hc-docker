@@ -52,12 +52,12 @@ $STEAMCMD_PATH +login $STEAM_USER $STEAM_PASS +runscript "$UPDATE_SCRIPT"
 if [ $? -eq 0 ]; then
   echo "Arma 3 Dedicated Server installation/update completed successfully."
 
-  # Create lowercase symlinks of mods in /arma3/mods_lowercase
+  # Create lowercase mods directory in /arma3/mods
   MODS_DIR="/arma3/steamapps/workshop/content/107410"
-  LOWERCASE_MODS_DIR="/arma3/mods_lowercase"
+  LOWERCASE_MODS_DIR="/arma3/mods"
 
   if [ -d "$MODS_DIR" ]; then
-    echo "Creating lowercase symlinks of mods in $LOWERCASE_MODS_DIR..."
+    echo "Creating lowercase mods in $LOWERCASE_MODS_DIR..."
     mkdir -p "$LOWERCASE_MODS_DIR"
     for mod_path in "$MODS_DIR"/*; do
       if [ -d "$mod_path" ]; then
@@ -66,11 +66,11 @@ if [ $? -eq 0 ]; then
 
         # Remove existing lowercase directory if it exists
         if [ -e "$lowercase_mod_dir" ]; then
-          echo "Removing existing symlink or directory: $lowercase_mod_dir"
+          echo "Removing existing directory: $lowercase_mod_dir"
           rm -rf "$lowercase_mod_dir"
         fi
 
-        # Create lowercase symlinks for all files and directories inside the mod
+        # Create lowercase files and directories inside the mod
         mkdir -p "$lowercase_mod_dir"
         find "$mod_path" -print0 | while IFS= read -r -d '' file; do
           relative_path="${file#$mod_path}"
@@ -81,35 +81,12 @@ if [ $? -eq 0 ]; then
             ln -s "$file" "$lowercase_path"
           fi
         done
-        echo "Lowercase symlinks created for mod: $lowercase_mod_dir"
+        echo "Lowercase mods created for mod: $lowercase_mod_dir"
       else
         echo "Warning: $mod_path is not a directory"
       fi
     done
-    echo "Lowercase symlinks created successfully."
-
-    # Create symlinks for mods in /arma3
-    TARGET_DIR="/arma3"
-    echo "Creating symlinks for mods in $TARGET_DIR..."
-    for mod_path in "$LOWERCASE_MODS_DIR"/*; do
-      if [ -d "$mod_path" ]; then
-        mod_id=$(basename "$mod_path")
-        symlink_path="$TARGET_DIR/$mod_id"
-
-        # Remove existing symlink if it exists
-        if [ -e "$symlink_path" ]; then
-          echo "Removing existing symlink or directory: $symlink_path"
-          rm -rf "$symlink_path"
-        fi
-
-        # Create the new symlink
-        ln -s "$mod_path" "$symlink_path"
-        echo "Symlink created: $symlink_path -> $mod_path"
-      else
-        echo "Warning: $mod_path is not a directory"
-      fi
-    done
-    echo "Symlinks created successfully."
+    echo "Lowercase mods created successfully."
   else
     echo "No mods found in $MODS_DIR." >&2
   fi
