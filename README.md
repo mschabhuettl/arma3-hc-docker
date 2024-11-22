@@ -94,6 +94,8 @@ services:
     volumes:
       - ./arma3_hc_config.env:/arma3/arma3_hc_config.env
       - arma3_data:/arma3
+      - arma3_mods:/arma3/steamapps/workshop/content/107410
+      - arma3_mods_dir:/arma3/mods
     command: /bin/bash -c "source /arma3/arma3_hc_config.env && /arma3/start_updater.sh"
     restart: "no"
 
@@ -104,8 +106,10 @@ services:
       - ./arma3_hc_config.env
     volumes:
       - ./arma3_hc_config.env:/arma3/arma3_hc_config.env
-      - arma3_data:/arma3:ro
-      - logs:/logs
+      - arma3_data:/arma3
+      - arma3_mods:/arma3/steamapps/workshop/content/107410
+      - arma3_mods_dir:/arma3/mods
+      - arma3_logs:/logs
     command: /bin/bash -c "source /arma3/arma3_hc_config.env && /scripts/start_client.sh"
     restart: always
 
@@ -116,14 +120,18 @@ services:
       - ./arma3_hc_config.env
     volumes:
       - ./arma3_hc_config.env:/arma3/arma3_hc_config.env
-      - arma3_data:/arma3:ro
-      - logs:/logs
+      - arma3_data:/arma3
+      - arma3_mods:/arma3/steamapps/workshop/content/107410
+      - arma3_mods_dir:/arma3/mods
+      - arma3_logs:/logs
     command: /bin/bash -c "source /arma3/arma3_hc_config.env && /scripts/start_client.sh"
     restart: always
 
 volumes:
   arma3_data:
-  logs:
+  arma3_mods:
+  arma3_mods_dir:
+  arma3_logs:
 ```
 
 **Environment File Example (`arma3_hc_config.env`)**
